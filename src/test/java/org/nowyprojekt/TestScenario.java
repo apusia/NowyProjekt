@@ -1,28 +1,35 @@
 package org.nowyprojekt;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Test;
+import org.nowyprojekt.setup.SeleniumEngine;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.FluentWait;
 
 public class TestScenario {
+//    @BeforeEach
+//    public void beforeEach(){
+//        MainPage mainPage = new MainPage();
+//        mainPage.loadedMainPage();
+//    }
 
     @Test
-    public void someTest() {
-        WebDriverManager.chromedriver().setup();
+    public void InputAsus() {
+        SeleniumEngine seleniumEngine = SeleniumEngine.getInstance();
+        WebDriver webDriver = seleniumEngine.getWebDriver();
+        FluentWait<WebDriver> wait = seleniumEngine.getWait();
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--disable-notifications");
+        MainPage mainPage = new MainPage();
 
-        WebDriver driver = new ChromeDriver(options);
+        webDriver.navigate().to("https://www.komputronik.pl/");
 
-        driver.get("https://www.komputronik.pl/");
+        mainPage.acceptCookiePopup(wait);
+        mainPage.acceptPopupKlodka(wait);
 
-        By acceptCookiesPopUp = By.cssSelector("#onetrust-accept-btn-handler");
-        driver.findElement(acceptCookiesPopUp).click();
+        By inputSelector = By.cssSelector("#wp-autocomplete");
+        webDriver.findElement(inputSelector).sendKeys("Asus");
 
+
+//        seleniumEngine.QuitBrowser()
     }
 }
